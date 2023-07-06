@@ -20,7 +20,10 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+    private Long id;
+    
     private String name;
-    private String marca;
+    private String brand;
+
+
 }
