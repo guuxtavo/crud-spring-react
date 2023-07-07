@@ -23,20 +23,42 @@ public class ProductService {
         return repository.findAll();
     }
 
-    // Método para cadastrar produtos
+    // Método para cadastrar ou alterar produtos
 
     public ResponseEntity<?> cadastrar(Product p) {
         if (p.getName().equals("")) {
             response.setMessage("O nome do produto é obrigatório!");
             return new ResponseEntity<ResponseModel>(response, HttpStatus.BAD_REQUEST);
-        } else if(p.getBrand().equals("")){
+        } else if (p.getBrand().equals("")) {
             response.setMessage("O nome da marca é obrigatório");
             return new ResponseEntity<ResponseModel>(response, HttpStatus.BAD_REQUEST);
-        }else{
+        } else {
             return new ResponseEntity<Product>(repository.save(p), HttpStatus.CREATED);
             // Product product = repository.save(p);
             // return ResponseEntity.ok(product);
         }
+
     }
+
+    // método para atualizar
+    public Product atualizar(Long id, Product obj) {
+        Product entity = repository.getReferenceById(id);
+        atualizarDados(entity, obj);
+        // return new ResponseEntity<Product>(repository.save(entity), HttpStatus.OK);
+        return repository.save(entity);
+    }
+
+    public void atualizarDados(Product entity, Product obj) {
+        entity.setName(obj.getName());
+        entity.setBrand(obj.getBrand());
+    }
+
+    // Método para remover produtos
+    public ResponseEntity<ResponseModel> remover(Long id){
+        repository.deleteById(id);
+        response.setMessage("O produto foi removido com sucesso!!");
+        return new ResponseEntity<ResponseModel>(response, HttpStatus.OK);
+    }
+
 
 }
